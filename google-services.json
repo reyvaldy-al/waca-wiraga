@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "257086671228",
+    "project_id": "kinetic-primer-312612",
+    "storage_bucket": "kinetic-primer-312612.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257086671228:android:baaa53e0e8b9c149bffcf9",
+        "android_client_info": {
+          "package_name": "com.gachateam.wacawiraga"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "257086671228-cv53o78p1jlo6nokieug15660pg3h5d1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gachateam.wacawiraga",
+            "certificate_hash": "218b31484af11e5e7a7fe120f66640a26d8787af"
+          }
+        },
+        {
+          "client_id": "257086671228-qdm2t2fhgg3ata0qd9l638jspvk7q2in.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCryXo6LXDPNW_UHrZS2dubXgKK9wd4WYg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "257086671228-qdm2t2fhgg3ata0qd9l638jspvk7q2in.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
