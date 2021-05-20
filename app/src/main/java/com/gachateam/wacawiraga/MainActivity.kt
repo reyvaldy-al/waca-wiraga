@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.gachateam.wacawiraga.databinding.ActivityMainBinding
+import com.gachateam.wacawiraga.utils.Helper
 import com.github.dhaval2404.imagepicker.ImagePicker
 
 class MainActivity : AppCompatActivity() {
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        binding.btnTakePicture.setOnClickListener {
+        binding.cvTakePicture.setOnClickListener {
             ImagePicker.with(this)
 //                .crop()	    			//Crop image(Optional), Check Customization for more option
                 .compress(1024)            //Final image size will be less than 1 MB(Optional)
@@ -31,6 +32,8 @@ class MainActivity : AppCompatActivity() {
                 )    //Final image resolution will be less than 1080 x 1080(Optional)
                 .start()
         }
+
+        binding.textView.text = Helper.getGreetingMessage()
     }
 
 
