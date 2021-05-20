@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Waca Wiraga</string>
+    <string name="try_now">Coba Sekarang</string>
+    <string name="desc_take_camera">Kenali bahasa isyarat dengan menggunakan kamera atau memilih gambar dari file kamu</string>
+    <string name="about_us">Tentang Kami</string>
+    <string name="desc_about_us">Kenal lebih dekat dengan pengembang aplikasi Waca Wiraga</string>
 </resources>
