@@ -7,9 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.gachateam.wacawiraga.DetectionActivity.Companion.EXTRA_IMAGE_PATH
 import com.gachateam.wacawiraga.databinding.ActivityMainBinding
+import com.gachateam.wacawiraga.utils.GlideApp
 import com.gachateam.wacawiraga.utils.Helper
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.vmadalin.easypermissions.EasyPermissions
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,35 +24,49 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         binding.cvTakePicture.setOnClickListener {
             ImagePicker.with(this)
-//                .crop()	    			//Crop image(Optional), Check Customization for more option
-                .compress(1024)            //Final image size will be less than 1 MB(Optional)
+                .compress(1024)
                 .maxResultSize(
                     1080,
                     1080
-                )    //Final image resolution will be less than 1080 x 1080(Optional)
+                )
                 .start()
+
+            GlideApp.with(this)
+                .load(R.drawable.ic_take_camera)
+                .into(binding.imageView2)
         }
 
         binding.textView.text = Helper.getGreetingMessage()
+
+
+
+
     }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            //Image Uri will not be null for RESULT_OK
-            val uri: Uri = data?.data!!
-            Log.d("Take", "uri = $uri")
-            Toast.makeText(this, "Task Success", Toast.LENGTH_SHORT).show()
-            // Use Uri object instead of File to avoid storage permissions
-//            imgProfile.setImageURI(fileUri)
-        } else if (resultCode == ImagePicker.RESULT_ERROR) {
-            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                val uri: Uri = data?.data!!
+                Log.d("Take", "uri = $uri")
+
+                val intent = Intent(this@MainActivity,DetectionActivity::class.java).apply {
+                    putExtra(EXTRA_IMAGE_PATH,uri.toString())
+                }
+
+                startActivity(intent)
+            }
+            ImagePicker.RESULT_ERROR -> {
+                Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+                Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
+            }
         }
     }
+
+
 }
