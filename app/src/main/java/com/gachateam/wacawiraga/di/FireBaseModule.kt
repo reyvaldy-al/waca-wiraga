@@ -3,6 +3,8 @@ package com.gachateam.wacawiraga.di
 import com.google.mlkit.common.model.CustomRemoteModel
 import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.linkfirebase.FirebaseModelSource
+import com.google.mlkit.vision.objects.ObjectDetection
+import com.google.mlkit.vision.objects.custom.CustomObjectDetectorOptions
 
 object FireBaseModule {
     private const val CUSTOM_MODEL_NAME = "model name"
@@ -16,10 +18,10 @@ object FireBaseModule {
     val downloadConditions = DownloadConditions.Builder()
         .build()
 
-    //download model if not exist or update
-//     RemoteModelManager.getInstance().download(remoteModel, downloadConditions)
-//        .addOnSuccessListener {
-//            // Success.
-//
-//        }
+    val customObjectDetectorOptions = CustomObjectDetectorOptions.Builder(remoteModel)
+        .setDetectorMode(CustomObjectDetectorOptions.SINGLE_IMAGE_MODE)
+        .build()
+
+    val objectDetector = ObjectDetection.getClient(customObjectDetectorOptions)
+
 }

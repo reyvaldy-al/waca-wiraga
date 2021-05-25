@@ -1,8 +1,8 @@
 package com.gachateam.wacawiraga.ui.detection
 
 import android.Manifest.permission.*
-import android.net.Uri
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.gachateam.wacawiraga.databinding.ActivityDetectionBinding
@@ -15,21 +15,29 @@ import timber.log.Timber
 class DetectionActivity : AppCompatActivity(),EasyPermissions.PermissionCallbacks {
 
     private lateinit var binding : ActivityDetectionBinding
-    private var uriImage :Uri? = null
+
+    private val viewmodel by viewModels<DetectionViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        uriImage = intent.getStringExtra(EXTRA_IMAGE_PATH)?.toUri()
-        loadImageRequierePermissions()
+        val uriImage = intent.getStringExtra(EXTRA_IMAGE_PATH)?.toUri()!!
+        viewmodel.submitUri(uriImage)
+
+        viewmodel.uriImage.observe(this){
+            loadImageRequierePermissions()
+        }
+
+
     }
 
+    //required to not have param
     @AfterPermissionGranted(REQUEST_CODE_STORAGE_PERMISSION)
     fun loadImageRequierePermissions() {
         if (EasyPermissions.hasPermissions(this, WRITE_EXTERNAL_STORAGE)) {
             GlideApp.with(this)
-                .load(uriImage)
+                .load(viewmodel.uriImage.value)
                 .dontAnimate()
                 .into(binding.imageView2)
 
