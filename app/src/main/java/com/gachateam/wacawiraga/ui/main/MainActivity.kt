@@ -30,10 +30,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.cvTakePicture.setOnClickListener {
-           /* if (viewModel.listeningDownloadModelProgress.value !is Resource.Success) {
+            if (viewModel.listeningDownloadModelProgress.value !is Resource.Success) {
                 toast("model is not ready")
                 return@setOnClickListener
-            }*/
+            }
 
             ImagePicker.with(this)
                 .compress(1024)

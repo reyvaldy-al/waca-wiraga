@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.gachateam.wacawiraga.databinding.ActivityDetectionBinding
 import com.gachateam.wacawiraga.utils.GlideApp
+import com.gachateam.wacawiraga.utils.Resource
 import com.vmadalin.easypermissions.EasyPermissions
 import com.vmadalin.easypermissions.annotations.AfterPermissionGranted
 import com.vmadalin.easypermissions.dialogs.SettingsDialog
@@ -22,14 +23,33 @@ class DetectionActivity : AppCompatActivity(),EasyPermissions.PermissionCallback
         super.onCreate(savedInstanceState)
         binding = ActivityDetectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        listenbackPressed()
         val uriImage = intent.getStringExtra(EXTRA_IMAGE_PATH)?.toUri()!!
         viewmodel.submitUri(uriImage)
 
-        viewmodel.uriImage.observe(this){
+        viewmodel.uriImage.observe(this) {
             loadImageRequierePermissions()
+            viewmodel.processImage(it)
         }
 
-        binding.btnBack.setOnClickListener { onBackPressed() }
+        viewmodel.processedTextResult.observe(this) {
+            when (it) {
+                is Resource.Loading -> {
+                    binding.tvLabel.text = "meproses..."
+                }
+                is Resource.Success -> {
+                    val text = it.succesData
+                    binding.tvLabel.text = if (text.isEmpty()) {
+                        "huruf / kata tidak terbaca"
+                    } else {
+                        text
+                    }
+                }
+                is Resource.Error -> {
+                    binding.tvLabel.text = it.exception
+                }
+            }
+        }
     }
 
     //required to not have param
@@ -73,6 +93,9 @@ class DetectionActivity : AppCompatActivity(),EasyPermissions.PermissionCallback
         const val EXTRA_IMAGE_PATH = "extra_image_path"
         const val REQUEST_CODE_STORAGE_PERMISSION = 213
     }
+
+    fun listenbackPressed() = binding.btnBack.setOnClickListener { onBackPressed() }
+
 
     override fun onBackPressed() {
         super.onBackPressed()

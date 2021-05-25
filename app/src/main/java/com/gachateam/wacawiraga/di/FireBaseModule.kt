@@ -7,7 +7,7 @@ import com.google.mlkit.vision.objects.ObjectDetection
 import com.google.mlkit.vision.objects.custom.CustomObjectDetectorOptions
 
 object FireBaseModule {
-    private const val CUSTOM_MODEL_NAME = "model name"
+    private const val CUSTOM_MODEL_NAME = "gesture-detector"
 
     // Specify the name you assigned in the Firebase console.
     val remoteModel =
