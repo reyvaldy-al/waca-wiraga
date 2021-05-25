@@ -29,7 +29,7 @@ class DetectionActivity : AppCompatActivity(),EasyPermissions.PermissionCallback
             loadImageRequierePermissions()
         }
 
-
+        binding.btnBack.setOnClickListener { onBackPressed() }
     }
 
     //required to not have param
@@ -72,5 +72,10 @@ class DetectionActivity : AppCompatActivity(),EasyPermissions.PermissionCallback
     companion object {
         const val EXTRA_IMAGE_PATH = "extra_image_path"
         const val REQUEST_CODE_STORAGE_PERMISSION = 213
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 }

@@ -69,7 +69,6 @@ class MainActivity : AppCompatActivity() {
             Activity.RESULT_OK -> {
                 val uri: Uri = data?.data!!
                 Timber.i( "uri = $uri")
-                Toast.makeText(this, "Task Success", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this@MainActivity, DetectionActivity::class.java).apply {
                     putExtra(EXTRA_IMAGE_PATH,uri.toString())
                 }
