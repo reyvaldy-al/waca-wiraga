@@ -15,30 +15,30 @@ import com.vmadalin.easypermissions.dialogs.SettingsDialog
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class DetectionActivity : AppCompatActivity(),EasyPermissions.PermissionCallbacks {
+class DetectionActivity : AppCompatActivity()/*,EasyPermissions.PermissionCallbacks*/ {
 
     private lateinit var binding : ActivityDetectionBinding
-    private var uriImage :Uri? = null
+   /* private var uriImage :Uri? = null*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detection)
         binding = ActivityDetectionBinding.inflate(layoutInflater)
-        uriImage = intent.getStringExtra(EXTRA_IMAGE_PATH)?.toUri()
+      //  uriImage = intent.getStringExtra(EXTRA_IMAGE_PATH)?.toUri()
 
-        loadImageRequierePermissions()
+      /*  loadImageRequierePermissions()*/
 
+        GlideApp.with(this)
+            .load(R.drawable.ic_take_camera)
+            .dontAnimate()
+            .into(binding.imageView2)
 
         binding.btnReload.setOnClickListener {
-            GlideApp.with(this)
-                .load(R.drawable.ic_take_camera)
-                .dontAnimate()
-                .into(binding.imageView2)
-        }
 
+        }
     }
 
-    @AfterPermissionGranted(REQUEST_CODE_STORAGE_PERMISSION)
+   /* @AfterPermissionGranted(REQUEST_CODE_STORAGE_PERMISSION)
     fun loadImageRequierePermissions() {
         if (EasyPermissions.hasPermissions(
                 this,
@@ -59,9 +59,9 @@ class DetectionActivity : AppCompatActivity(),EasyPermissions.PermissionCallback
                 WRITE_EXTERNAL_STORAGE
             )
         }
-    }
+    }*/
 
-    override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
+   /* override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
         Log.d("tag", "$requestCode $perms denied")
         if (EasyPermissions.somePermissionPermanentlyDenied(this@DetectionActivity, perms)) {
             SettingsDialog.Builder(this).build().show()
@@ -71,8 +71,8 @@ class DetectionActivity : AppCompatActivity(),EasyPermissions.PermissionCallback
     override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
         Log.d("tag","$requestCode $perms granted")
     }
-
-    override fun onRequestPermissionsResult(
+*/
+  /*  override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
@@ -80,7 +80,7 @@ class DetectionActivity : AppCompatActivity(),EasyPermissions.PermissionCallback
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
-
+*/
     companion object {
         const val EXTRA_IMAGE_PATH = "extra_image_path"
         const val REQUEST_CODE_STORAGE_PERMISSION = 213
