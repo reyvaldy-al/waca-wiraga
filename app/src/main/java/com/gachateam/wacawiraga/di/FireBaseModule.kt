@@ -2,7 +2,6 @@ package com.gachateam.wacawiraga.di
 
 import com.google.mlkit.common.model.CustomRemoteModel
 import com.google.mlkit.common.model.DownloadConditions
-import com.google.mlkit.common.model.RemoteModelManager
 import com.google.mlkit.linkfirebase.FirebaseModelSource
 
 object FireBaseModule {

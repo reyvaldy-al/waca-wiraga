@@ -4,7 +4,6 @@ import android.app.Application
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
-
 class WacaWiragaApplication : Application() {
 
     override fun onCreate() {

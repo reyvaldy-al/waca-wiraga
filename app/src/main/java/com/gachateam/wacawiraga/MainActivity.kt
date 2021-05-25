@@ -3,14 +3,14 @@ package com.gachateam.wacawiraga
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.gachateam.wacawiraga.DetectionActivity.Companion.EXTRA_IMAGE_PATH
 import com.gachateam.wacawiraga.databinding.ActivityMainBinding
 import com.gachateam.wacawiraga.utils.Helper
 import com.github.dhaval2404.imagepicker.ImagePicker
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,11 +39,9 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         when (resultCode) {
             Activity.RESULT_OK -> {
-                //Image Uri will not be null for RESULT_OK
                 val uri: Uri = data?.data!!
-                Log.d("Take", "uri = $uri")
+                Timber.i( "uri = $uri")
                 Toast.makeText(this, "Task Success", Toast.LENGTH_SHORT).show()
-                // Use Uri object instead of File to avoid storage permissions
                 val intent = Intent(this@MainActivity,DetectionActivity::class.java).apply {
                     putExtra(EXTRA_IMAGE_PATH,uri.toString())
                 }
