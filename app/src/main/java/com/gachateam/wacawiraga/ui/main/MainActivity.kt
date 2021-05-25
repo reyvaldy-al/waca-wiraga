@@ -1,4 +1,4 @@
-package com.gachateam.wacawiraga
+package com.gachateam.wacawiraga.ui.main
 
 import android.app.Activity
 import android.content.Intent
@@ -6,8 +6,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.gachateam.wacawiraga.DetectionActivity.Companion.EXTRA_IMAGE_PATH
+import com.gachateam.wacawiraga.R
+import com.gachateam.wacawiraga.ui.detection.DetectionActivity.Companion.EXTRA_IMAGE_PATH
 import com.gachateam.wacawiraga.databinding.ActivityMainBinding
+import com.gachateam.wacawiraga.ui.detection.DetectionActivity
 import com.gachateam.wacawiraga.utils.Helper
 import com.github.dhaval2404.imagepicker.ImagePicker
 import timber.log.Timber
@@ -42,7 +44,7 @@ class MainActivity : AppCompatActivity() {
                 val uri: Uri = data?.data!!
                 Timber.i( "uri = $uri")
                 Toast.makeText(this, "Task Success", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this@MainActivity,DetectionActivity::class.java).apply {
+                val intent = Intent(this@MainActivity, DetectionActivity::class.java).apply {
                     putExtra(EXTRA_IMAGE_PATH,uri.toString())
                 }
                 startActivity(intent)

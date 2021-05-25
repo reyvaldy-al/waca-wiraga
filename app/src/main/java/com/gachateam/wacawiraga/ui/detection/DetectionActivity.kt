@@ -1,4 +1,4 @@
-package com.gachateam.wacawiraga
+package com.gachateam.wacawiraga.ui.detection
 
 import android.Manifest.permission.*
 import android.net.Uri

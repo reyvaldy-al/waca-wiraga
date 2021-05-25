@@ -16,11 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WacaWiraga.NoActionBar">
-        <activity android:name=".DetectionActivity">
-
-        </activity>
-        <activity android:name=".SplashScreen"/>
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.detection.DetectionActivity"/>
+        <activity android:name=".ui.splash.SplashScreen"/>
+        <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

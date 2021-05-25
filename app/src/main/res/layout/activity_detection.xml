@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".DetectionActivity">
+    tools:context=".ui.detection.DetectionActivity">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView2"
