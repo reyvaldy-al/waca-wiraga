@@ -21,3 +21,11 @@ object Helper {
 fun Context.toast(message: String, duration : Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this,message,duration).show()
 }
+
+fun getImageTextFromIndex(index: Int): String {
+    return when (index) {
+        0 -> "rumah"
+        1 -> "sekolah"
+        else -> "not found"
+    }
+}

@@ -4,9 +4,12 @@ import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.gachateam.wacawiraga.ImageLabel
 import com.gachateam.wacawiraga.di.FireBaseModule
 import com.gachateam.wacawiraga.utils.Resource
+import com.gachateam.wacawiraga.utils.getImageTextFromIndex
 import com.google.mlkit.vision.common.InputImage
+import timber.log.Timber
 
 class DetectionViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -18,29 +21,25 @@ class DetectionViewModel(application: Application) : AndroidViewModel(applicatio
 
     val uriImage = _uriImage
 
+    private val labeler = FireBaseModule.labeler
 
-    private val objectDetector = FireBaseModule.objectDetector
-    private val _processedTextResult = MutableLiveData<Resource<String>>()
+    private val _processedTextResult = MutableLiveData<Resource<List<ImageLabel>>>()
     val processedTextResult = _processedTextResult
-    fun processImage(uriImage : Uri)  {
+    fun processImage(uriImage: Uri) {
         _processedTextResult.value = Resource.Loading
         val image = InputImage.fromFilePath(getApplication(), uriImage)
-        objectDetector
-            .process(image)
-            .addOnSuccessListener { result ->
-                var textResult = ""
-                result.forEach { detectedObject ->
-                    val boundingBox = detectedObject.boundingBox
-                    detectedObject.labels.forEach { label ->
-                        val text = label.text
-                        val index = label.index
-                        val confidence = label.confidence
-                        textResult += "text = $text, index = $index, confidence = $confidence, boundingbox = $boundingBox\n"
-                    }
+        labeler.process(image)
+            .addOnSuccessListener { labels ->
+                val listImageLabel = labels.map {
+                    Timber.i("text = ${it.text}, index = ${it.index}, confidence = ${it.confidence}")
+                    ImageLabel(
+                        text = it.text,
+                        index = it.index,
+                        confidence = it.confidence
+                    )
                 }
-                _processedTextResult.value = Resource.Success(textResult)
+                _processedTextResult.value = Resource.Success(listImageLabel)
             }.addOnFailureListener {
-                it.printStackTrace()
                 _processedTextResult.value = Resource.Error(it.localizedMessage)
             }
     }

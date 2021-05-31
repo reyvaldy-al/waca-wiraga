@@ -2,9 +2,12 @@ package com.gachateam.wacawiraga.ui.detection
 
 import android.Manifest.permission.*
 import android.os.Bundle
+import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.gachateam.wacawiraga.databinding.ActivityDetectionBinding
 import com.gachateam.wacawiraga.utils.GlideApp
 import com.gachateam.wacawiraga.utils.Resource
@@ -31,21 +34,23 @@ class DetectionActivity : AppCompatActivity(),EasyPermissions.PermissionCallback
             loadImageRequierePermissions()
             viewmodel.processImage(it)
         }
+        val adapter = ResultDetectionAdapter()
+        binding.resultDetectionRv.adapter = adapter
+        binding.resultDetectionRv.layoutManager = LinearLayoutManager(this)
+        binding.resultDetectionRv.setHasFixedSize(true)
 
         viewmodel.processedTextResult.observe(this) {
             when (it) {
                 is Resource.Loading -> {
-                    binding.tvLabel.text = "meproses..."
+                    binding.tvLabel.isVisible = true
+                    binding.tvLabel.text = "memproses..."
                 }
                 is Resource.Success -> {
-                    val text = it.succesData
-                    binding.tvLabel.text = if (text.isEmpty()) {
-                        "huruf / kata tidak terbaca"
-                    } else {
-                        text
-                    }
+                    binding.tvLabel.isVisible = false
+                    adapter.submitList(it.succesData)
                 }
                 is Resource.Error -> {
+                    binding.tvLabel.isVisible = true
                     binding.tvLabel.text = it.exception
                 }
             }
@@ -55,11 +60,11 @@ class DetectionActivity : AppCompatActivity(),EasyPermissions.PermissionCallback
     //required to not have param
     @AfterPermissionGranted(REQUEST_CODE_STORAGE_PERMISSION)
     fun loadImageRequierePermissions() {
-        if (EasyPermissions.hasPermissions(this, WRITE_EXTERNAL_STORAGE)) {
+        if (EasyPermissions.hasPermissions(this, READ_EXTERNAL_STORAGE)) {
             GlideApp.with(this)
                 .load(viewmodel.uriImage.value)
                 .dontAnimate()
-                .into(binding.imageView2)
+                .into(binding.ivOriginal)
 
         } else {
             EasyPermissions.requestPermissions(

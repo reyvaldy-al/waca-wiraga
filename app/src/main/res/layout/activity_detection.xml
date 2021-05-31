@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,6 +9,8 @@
     tools:context=".ui.detection.DetectionActivity">
 
     <LinearLayout
+        android:id="@+id/topbar"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -33,11 +35,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     </LinearLayout>
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@id/topbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/iv_original"
         android:layout_width="260dp"
         android:layout_marginTop="16dp"
         android:layout_height="280dp"
@@ -48,6 +52,7 @@
         app:shapeAppearanceOverlay="@style/roundedCorner" />
 
     <TextView
+        android:id="@+id/tv_show_hasil_analisa"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -55,26 +60,37 @@
         android:textColor="@android:color/black"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/image" />
+        app:layout_constraintTop_toBottomOf="@id/iv_original" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Huruf yang terdeteksi adalah: "
+        android:text="Huruf / kata yang terdeteksi adalah: "
         android:textColor="@android:color/black"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/image" />
+        android:id="@+id/tv_show_deskripsi"
+        app:layout_constraintTop_toBottomOf="@id/tv_show_hasil_analisa" />
 
     <TextView
         android:id="@+id/tv_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        tools:text="p"
+        tools:text="memproses..."
         android:textColor="@android:color/black"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/image" />
+        app:layout_constraintTop_toBottomOf="@id/tv_show_deskripsi" />
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/result_detection_rv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:listitem="@layout/item_result_detection"
+        app:layout_constraintTop_toBottomOf="@id/tv_label"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
