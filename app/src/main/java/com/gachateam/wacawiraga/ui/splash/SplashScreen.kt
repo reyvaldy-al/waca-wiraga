@@ -1,10 +1,12 @@
-package com.gachateam.wacawiraga
+package com.gachateam.wacawiraga.ui.splash
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import com.gachateam.wacawiraga.R
+import com.gachateam.wacawiraga.ui.main.MainActivity
 
 class SplashScreen : AppCompatActivity() {
 

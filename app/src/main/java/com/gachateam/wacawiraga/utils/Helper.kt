@@ -1,5 +1,7 @@
 package com.gachateam.wacawiraga.utils
 
+import android.content.Context
+import android.widget.Toast
 import java.util.*
 
 object Helper {
@@ -13,5 +15,17 @@ object Helper {
             in 21..23 -> "Selamat Malam,"
             else -> "Hello"
         }
+    }
+}
+
+fun Context.toast(message: String, duration : Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(this,message,duration).show()
+}
+
+fun getImageTextFromIndex(index: Int): String {
+    return when (index) {
+        0 -> "rumah"
+        1 -> "sekolah"
+        else -> "not found"
     }
 }
