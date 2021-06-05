@@ -22,17 +22,14 @@ object FireBaseModule {
 
     val customObjectDetectorOptions = CustomObjectDetectorOptions.Builder(remoteModel)
         .setDetectorMode(CustomObjectDetectorOptions.SINGLE_IMAGE_MODE)
-        .setClassificationConfidenceThreshold(0.5f)
-        .enableClassification()
         .build()
 
     val objectDetector = ObjectDetection.getClient(customObjectDetectorOptions)
 
-
     val customImageLabelerOptions = CustomImageLabelerOptions.Builder(remoteModel)
-        .setMaxResultCount(2)
         .build()
 
     val labeler = ImageLabeling.getClient(customImageLabelerOptions)
+
 
 }

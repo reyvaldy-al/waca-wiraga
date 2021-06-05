@@ -22,22 +22,26 @@ class DetectionViewModel(application: Application) : AndroidViewModel(applicatio
     val uriImage = _uriImage
 
     private val labeler = FireBaseModule.labeler
+    private val objectDetection = FireBaseModule.objectDetector
 
     private val _processedTextResult = MutableLiveData<Resource<List<ImageLabel>>>()
     val processedTextResult = _processedTextResult
     fun processImage(uriImage: Uri) {
         _processedTextResult.value = Resource.Loading
         val image = InputImage.fromFilePath(getApplication(), uriImage)
-        labeler.process(image)
-            .addOnSuccessListener { labels ->
-                val listImageLabel = labels.map {
-                    Timber.i("text = ${it.text}, index = ${it.index}, confidence = ${it.confidence}")
-                    ImageLabel(
-                        text = it.text,
-                        index = it.index,
-                        confidence = it.confidence
-                    )
-                }
+        objectDetection
+            .process(image)
+            .addOnSuccessListener { result ->
+               val listImageLabel =  result.map { detectedObject ->
+                    Timber.d("bounding box ${detectedObject.boundingBox}")
+                      detectedObject.labels.map {
+                        ImageLabel(
+                            text = it.text,
+                            index = it.index,
+                            confidence = it.confidence
+                        )
+                    }
+                }.flatten()
                 _processedTextResult.value = Resource.Success(listImageLabel)
             }.addOnFailureListener {
                 _processedTextResult.value = Resource.Error(it.localizedMessage)
