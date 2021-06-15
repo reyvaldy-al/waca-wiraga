@@ -94,6 +94,7 @@ class DetectionActivity : AppCompatActivity(),EasyPermissions.PermissionCallback
                             return false
                         }
                         //viewmodel.processBitmap(resource.toBitmap())
+                        viewmodel.processBitmap2(resource.toBitmap())
                         return false
                     }
 

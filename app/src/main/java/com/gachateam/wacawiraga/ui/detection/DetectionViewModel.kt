@@ -8,9 +8,14 @@ import androidx.lifecycle.MutableLiveData
 import com.gachateam.wacawiraga.ImageLabel
 import com.gachateam.wacawiraga.di.FireBaseModule
 import com.gachateam.wacawiraga.ml.MetadataMobile
+import com.gachateam.wacawiraga.ml.Model2
+import com.gachateam.wacawiraga.utils.Helper
 import com.gachateam.wacawiraga.utils.Resource
 import com.google.mlkit.vision.common.InputImage
+import org.tensorflow.lite.support.common.TensorProcessor
+import org.tensorflow.lite.support.common.ops.NormalizeOp
 import org.tensorflow.lite.support.image.TensorImage
+import org.tensorflow.lite.support.label.TensorLabel
 import timber.log.Timber
 
 class DetectionViewModel(application: Application) : AndroidViewModel(application) {
@@ -64,6 +69,29 @@ class DetectionViewModel(application: Application) : AndroidViewModel(applicatio
             Timber.i("error ${e.localizedMessage}")
         }
     }
+
+    val model2 = Model2.newInstance(getApplication())
+    fun processBitmap2(bitmap: Bitmap) {
+        try {
+            val image = TensorImage.fromBitmap(bitmap).tensorBuffer
+            val outputs = model2.process(image)
+            val probability = outputs.outputFeature0AsTensorBuffer
+            Timber.i("probability $probability")
+
+            val probabilityProcessor = TensorProcessor.Builder()
+                .add(NormalizeOp(0f,255f)).build()
+
+            val labels = TensorLabel(Helper.labels, probabilityProcessor.process(probability))
+
+            val floatmap = labels.mapWithFloatValue
+
+            Timber.i("floatmap : $floatmap")
+
+        } catch (e: Exception) {
+            Timber.i("error processbitmap2 ${e.localizedMessage}")
+        }
+    }
+
 
     fun manualProcess(process: Resource<List<ImageLabel>>) {
         _processedTextResult.value = process
