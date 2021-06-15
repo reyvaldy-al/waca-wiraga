@@ -1,13 +1,20 @@
 package com.gachateam.wacawiraga.ui.detection
 
 import android.Manifest.permission.*
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.gachateam.wacawiraga.databinding.ActivityDetectionBinding
 import com.gachateam.wacawiraga.utils.GlideApp
 import com.gachateam.wacawiraga.utils.Resource
@@ -15,6 +22,7 @@ import com.vmadalin.easypermissions.EasyPermissions
 import com.vmadalin.easypermissions.annotations.AfterPermissionGranted
 import com.vmadalin.easypermissions.dialogs.SettingsDialog
 import timber.log.Timber
+import java.lang.Error
 
 class DetectionActivity : AppCompatActivity(),EasyPermissions.PermissionCallbacks {
 
@@ -42,6 +50,7 @@ class DetectionActivity : AppCompatActivity(),EasyPermissions.PermissionCallback
         viewmodel.processedTextResult.observe(this) {
             when (it) {
                 is Resource.Loading -> {
+
                     binding.tvLabel.isVisible = true
                     binding.tvLabel.text = "memproses..."
                 }
@@ -60,10 +69,35 @@ class DetectionActivity : AppCompatActivity(),EasyPermissions.PermissionCallback
     //required to not have param
     @AfterPermissionGranted(REQUEST_CODE_STORAGE_PERMISSION)
     fun loadImageRequierePermissions() {
+
         if (EasyPermissions.hasPermissions(this, READ_EXTERNAL_STORAGE)) {
             GlideApp.with(this)
                 .load(viewmodel.uriImage.value)
                 .dontAnimate()
+                .listener(object :RequestListener<Drawable>{
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean = true
+
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        if (resource == null){
+                            viewmodel.manualProcess(Resource.Error("image is not loaded"))
+                            return false
+                        }
+                        //viewmodel.processBitmap(resource.toBitmap())
+                        return false
+                    }
+
+                })
                 .into(binding.ivOriginal)
 
         } else {
